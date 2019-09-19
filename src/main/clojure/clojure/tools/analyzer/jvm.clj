@@ -497,9 +497,12 @@
      (env/ensure (global-env)
        (update-ns-map!)
        (let [env (merge env (-source-info form env))
-             [mform raw-forms] (with-bindings {Compiler/LOADER     (RT/makeClassLoader)
-                                               #'*ns*              (the-ns (:ns env))
-                                               #'ana/macroexpand-1 (get-in opts [:bindings #'ana/macroexpand-1] macroexpand-1)}
+             [mform raw-forms] (with-bindings (merge
+                                               {Compiler/LOADER     (RT/makeClassLoader)
+                                                #'*ns*              (the-ns (:ns env))
+
+                                                #'ana/macroexpand-1  macroexpand-1}
+                                               (:bindings opts))
                                  (loop [form form raw-forms []]
                                    (let [mform (ana/macroexpand-1 form env)]
                                      (if (= mform form)
@@ -535,7 +538,8 @@
                              (catch Exception e
                                (handle-evaluation-exception (ExceptionThrown. e a))))]
              (merge a {:result    result
-                       :raw-forms raw-forms})))))))
+                       :raw-forms raw-forms
+                       :expanded-form frm})))))))
 
 (defn analyze-ns
   "Analyzes a whole namespace, returns a vector of the ASTs for all the

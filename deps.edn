@@ -1,0 +1,6 @@
+{:deps {org.clojure/clojure {:mvn/version "1.10.0"}
+        org.clojure/tools.analyzer {:local/root "../tools.analyzer"}
+        org.clojure/core.memoize {:mvn/version "0.5.9"}
+        org.clojure/tools.reader {:mvn/version "1.3.2"}
+        org.ow2.asm/asm {:mvn/version "5.2"}}
+ :paths ["src/main/clojure"]}
